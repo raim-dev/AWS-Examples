@@ -1,1 +1,57 @@
 #!/usr/bin/env bash
+
+echo "sync"
+
+# Exit immediately if any command fails
+set -e
+set -o pipefail  # Ensures errors in pipelines (e.g., cmd1 | cmd2) are detected
+
+
+#check if bucket name
+if [ -z "$1" ]; then
+  echo "Error: No bucket name provided."
+  exit 1
+fi
+
+#check for filename prefix
+if [ -z "$2" ]; then
+  echo "Error: No filename prefix."
+  exit 1
+fi
+
+BUCKET_NAME=$1
+FILENAME_PREFIX=$2
+
+
+# where we'll store those files
+OUTPUT_DIR="/tmp/s3-bash-script"
+
+# lets create output folder
+mkdir -p $OUTPUT_DIR
+
+# Remove all files before each run
+
+rm -rf "$OUTPUT_DIR"/*
+
+# Generate a random number between 5 and 10
+NUM_FILES=$(( RANDOM % 6 + 5 ))
+
+DATA="This is sample data written to all files."
+#DATA_FILE="source_data.bin"
+
+#echo "Creating $NUM_FILES random files..."
+
+# Loop to create files
+for (( i=1; i<=NUM_FILES; i++ )); do
+
+  FILENAME="$OUTPUT_DIR/${FILENAME_PREFIX}_$RANDOM.txt"
+
+ #touch "$FILENAME"
+  echo "$DATA" > "$FILENAME"
+ # dd if="$DATA_FILE" of="$FILENAME" bs=1M status=none
+
+done
+
+tree $OUTPUT_DIR
+
+aws s3 sync $OUTPUT_DIR s3://$BUCKET_NAME/files
