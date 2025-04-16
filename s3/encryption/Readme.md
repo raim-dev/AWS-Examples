@@ -22,13 +22,21 @@ echo MD5_VALUE
 ### put object with SSE-C via s3
 
 ## generate key
- // openssl rand -out ssec.key 32
+ > openssl rand -out ssec.key 32
 
 ## upload
 aws s3 cp hello.txt s3://ecryptionpro01 --sse-c AES256 --sse-c-key fileb://ssec.key
 
 ## download
 aws s3 cp s3://ecryptionpro01/hello.txt hello.txt --sse-c AES256 --sse-c-key fileb://ssec.key
+
+
+### Encryption client-side SDK with Ruby
+
+
+> bundle exec ruby encrypt.rb
+
+
 
 
 
