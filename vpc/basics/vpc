@@ -1,0 +1,24 @@
+#!/ursbin/env bash
+
+## create VPC
+
+aws ec2 create-vpc --cidr-block "172.1.0.0/16" \
+ --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=my-vpc-cli}]' \
+ --region us-west-1 
+
+## Select VPCs
+aws ec2 describe-vpcs --query "Vpcs[*].{ID:VpcId, CIDR:CidrBlock, State:State, Name:Tags[?Key=='Name']|[0].Value}" \
+ --output table --region us-west-1
+
+## Delete VPC
+ aws ec2 delete-vpc --vpc-id vpc-089efcaedffe66abd --region us-west-1
+
+## create an IGW
+
+## attach an IGW
+
+## create a new subnet
+
+## explictly associate subnet
+
+## add a route table to IGW
