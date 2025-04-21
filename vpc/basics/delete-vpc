@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+#check if the argumet is provided
+
+if [ -z "$1" ]; then
+  echo "❌ Error: No argument provided."
+else
+  export VPC_ID="$1"
+fi
+
+# detach the IGW
+
+# delete the IGW
+
+
+# delete vpc
+
+aws ec2 delete-vpc --vpc-id $VPC_ID --region us-west-1
+
+
